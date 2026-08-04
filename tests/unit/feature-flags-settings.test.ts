@@ -161,6 +161,17 @@ describe("featureFlagDefinitions", () => {
     assert.strictEqual(def.warningLevel, "danger");
   });
 
+  it("defines remote audio provider nodes as a network boolean flag disabled by default", () => {
+    // Guards the egress default: with this on, /v1/audio/* may reach a provider node
+    // hosted outside localhost. It must never become an implicit default (cf. #3963).
+    const def = FEATURE_FLAG_DEFINITIONS.find((d) => d.key === "AUDIO_REMOTE_PROVIDER_NODES");
+    assert.ok(def, "AUDIO_REMOTE_PROVIDER_NODES should exist");
+    assert.strictEqual(def.category, "network");
+    assert.strictEqual(def.type, "boolean");
+    assert.strictEqual(def.defaultValue, "false");
+    assert.strictEqual(def.warningLevel, "danger");
+  });
+
   it("defines CC discovery aliases as a runtime boolean flag disabled by default", () => {
     const def = FEATURE_FLAG_DEFINITIONS.find((d) => d.key === "EXPOSE_CC_DISCOVERY_ALIASES");
     assert.ok(def, "EXPOSE_CC_DISCOVERY_ALIASES should exist");
